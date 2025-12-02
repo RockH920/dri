@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>攝影機 DORI 距離計算機</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📷 攝影機 DORI 距離計算機</h1>
+            <p>基於 IEC 62676-4 標準計算偵測、觀察、辨識與鑑定距離。</p >
+        </header>
+
+        <main class="calculator-grid">
+            <section class="input-section">
+                <h2>參數設定</h2>
+                
+                <div class="form-group">
+                    <label for="resolutionSelect">攝影機解析度 (水平像素):</label>
+                    <select id="resolutionSelect" onchange="updateCustomResolution()">
+                        <option value="1280">720p HD (1280px)</option>
+                        <option value="1920" selected>1080p Full HD (1920px)</option>
+                        <option value="2560">4MP / 2K (2560px)</option>
+                        <option value="3840">8MP / 4K UHD (3840px)</option>
+                        <option value="custom">自定義...</option>
+                    </select>
+                    <input type="number" id="customResolution" placeholder="輸入水平像素 (例如 1920)" style="display: none;">
+                </div>
+
+                <div class="form-group">
+                    <label for="sensorSelect">感光元件尺寸 (Sensor Size):</label>
+                    <select id="sensorSelect" onchange="updateSensorWidth()">
+                        <option value="3.2">1/4"</option>
+                        <option value="4.8">1/3"</option>
+                        <option value="5.18" selected>1/2.8" (常見)</option>
+                        <option value="5.76">1/2.5"</option>
+                        <option value="6.4">1/2"</option>
+                        <option value="7.18">1/1.8"</option>
+                        <option value="custom">自定義寬度(mm)...</option>
+                    </select>
+                    <div id="sensorWidthDisplay" class="helper-text">實際寬度約: <span id="sensorWidthValue">5.18</span> mm</div>
+                    <input type="number" id="customSensorWidth" step="0.01" placeholder="輸入寬度 mm (例如 5.18)" style="display: none;">
+                </div>
+
+                <div class="form-group">
+                    <label for="focalLength">鏡頭焦距 (Focal Length, mm):</label>
+                    <input type="number" id="focalLength" value="2.8" step="0.1" min="0.1">
+                </div>
+
+                <button id="calculateBtn">開始計算</button>
+            </section>
+
+            <section class="output-section" id="resultsArea" style="display: none;">
+                <h2>計算結果</h2>
+                
+                <div class="summary-data">
+                   <p>水平視場角 (HFOV): <span id="hfovResult">-</span>°</p >
+                </div>
+
+                <div class="dori-cards">
+                    <div class="dori-card detection">
+                        <div class="card-header">
+                            <h3>D - 偵測 (Detection)</h3>
+                            <span class="ppm-badge">25 PPM</span>
+                        </div>
+                        <div class="card-body">
+                            <span class="distance-value" id="distD">0</span>
+                            <span class="unit">公尺 (Meters)</span>
+                        </div>
+                        <p class="description">畫面中有人影存在，確認目標出現。</p >
+                    </div>
+
+                    <div class="dori-card observation">
+                        <div class="card-header">
+                            <h3>O - 觀察 (Observation)</h3>
+                            <span class="ppm-badge">62.5 PPM</span>
+                        </div>
+                        <div class="card-body">
+                            <span class="distance-value" id="distO">0</span>
+                            <span class="unit">公尺 (Meters)</span>
+                        </div>
+                        <p class="description">可以看到目標的大致特徵與行為。</p >
+                    </div>
+
+                    <div class="dori-card recognition">
+                        <div class="card-header">
+                            <h3>R - 辨識 (Recognition)</h3>
+                            <span class="ppm-badge">125 PPM</span>
+                        </div>
+                        <div class="card-body">
+                            <span class="distance-value" id="distR">0</span>
+                            <span class="unit">公尺 (Meters)</span>
+                        </div>
+                        <p class="description">可以辨認出已知的人或物 (例如熟人)。</p >
+                    </div>
+
+                    <div class="dori-card identification">
+                        <div class="card-header">
+                            <h3>I - 鑑定 (Identification)</h3>
+                            <span class="ppm-badge">250 PPM</span>
+                        </div>
+                        <div class="card-body">
+                            <span class="distance-value" id="distI">0</span>
+                            <span class="unit">公尺 (Meters)</span>
+                        </div>
+                        <p class="description">細節足以作為證據，清楚辨識身份。</p >
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>註：計算結果基於理論光學公式，實際效果可能受鏡頭畸變、光線條件、壓縮率等因素影響。</p >
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
